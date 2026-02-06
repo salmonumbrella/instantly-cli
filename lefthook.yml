@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.go"
+      run: golangci-lint run --new-from-rev=HEAD~1
+    format-check:
+      glob: "*.go"
+      run: gofumpt -l -d . | head -20
+
+pre-push:
+  commands:
+    test:
+      run: go test -race ./...

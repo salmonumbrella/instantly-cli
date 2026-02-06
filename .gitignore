@@ -1,0 +1,45 @@
+# Binaries
+/instantly
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of go coverage tool
+*.out
+
+# Build directory
+/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs (generated/downloaded)
+/docs/
+PLAN.md
+SMOKE_TEST.md
+CLAUDE.md
+
+# Config with secrets
+.env
+.env.local
+
+# Cursor/Specstory
+.cursor/
+.specstory/
+
+# Python
+__pycache__/
+*.pyc

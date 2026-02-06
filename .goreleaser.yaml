@@ -1,0 +1,72 @@
+version: 2
+
+project_name: instantly-cli
+
+builds:
+  - id: instantly
+    main: ./cmd/instantly
+    binary: instantly
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X github.com/salmonumbrella/instantly-cli/internal/buildinfo.Version={{.Version}}
+      - -X github.com/salmonumbrella/instantly-cli/internal/buildinfo.Commit={{.Commit}}
+      - -X github.com/salmonumbrella/instantly-cli/internal/buildinfo.Date={{.Date}}
+
+archives:
+  - id: default
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+brews:
+  - name: instantly-cli
+    repository:
+      owner: salmonumbrella
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/salmonumbrella/instantly-cli"
+    description: "Agent-friendly CLI for Instantly.ai"
+    license: "MIT"
+    install: |
+      bin.install "instantly"
+    test: |
+      system "#{bin}/instantly", "--help"
+
+release:
+  github:
+    owner: salmonumbrella
+    name: instantly-cli
+  draft: false
+  prerelease: auto
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
